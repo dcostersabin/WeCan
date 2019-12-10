@@ -2,14 +2,17 @@
 
 Servo servo;
 
-  int pin = 14;
+  int switchPin = 14;
   int lid_status = 0 ;
+  int outputModulePin = 16;
 
 
 void setup()
 {
   Serial.begin(9600);
-  pinMode(pin, OUTPUT);
+  pinMode(switchPin, OUTPUT);
+  pinMode(outputModulePin, OUTPUT);
+  digitalWrite(outputModulePin,LOW);
   servo.attach(9);
   servo.write(0);
   
@@ -19,7 +22,7 @@ void setup()
 void loop()
 {
   
-  int val = digitalRead(pin);
+  int val = digitalRead(switchPin);
   
   if(val == 1)
   {
@@ -48,6 +51,7 @@ void open_lid()
       }
       
       lid_status = 1; 
+      digitalWrite(outputModulePin, HIGH);
 }
 
 void close_lid()
@@ -60,5 +64,5 @@ for(int j = 60 ; j > 0 ; j--)
       }
       
       lid_status = 0;
+      digitalWrite(outputModulePin,LOW);
 }
-
