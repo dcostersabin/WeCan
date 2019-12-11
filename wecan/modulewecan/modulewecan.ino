@@ -1,10 +1,16 @@
 #include <ESP8266WiFi.h>
 
 #include <ESP8266HTTPClient.h>
-#include <ArduinoJson.h>
+#include<ESP8266WebServer.h>
+#include<ESP8266HTTPClient.h>
+
+
+// define credentials
 
 #define STASSID "linux"
 #define STAPSK "frankensteindcoster"
+#define Link "http://0389affb.ngrok.io"
+#define ServerDelay 5000
 
 
 // define pins
@@ -15,30 +21,116 @@ const int ledGreen = 13 ;
 const int trigPin = 14;
 const int echoPin = 12;
 const int checkPin = 3;
-const int total_level = 16.5;
+const int totalLevel = 16.5;
 const int errorLevel = 1 ;
+const int dataRetries = 10 ;
+const int lidCheckPin = 1 ;
 
-double current_level;
+
+double currentLevel;
+int counter = 0 ;
+double tempCurrentLevel = 0;
+int sensorStatus = 0 ;
 
 
 
 void calculateGarbage()
 {
-  Serial.println("Distance");
-  double distance, duration;
-  digitalWrite(trigPin, HIGH);
-  delayMicroseconds(1000);
-  digitalWrite(trigPin, LOW);
-  duration = pulseIn(echoPin, HIGH); // calculating the distance with respect to duration of sound released by trigger
-  distance = (duration / 2) / 29.1;
-  Serial.println(distance);
-  current_level = ((distance - errorLevel) / (total_level)) * 100 ;
-  current_level = 100 - current_level;
-  Serial.print("current level");
-  Serial.print(current_level);
-  
+  Serial.println("counter" + counter);
+  counter ++ ;
+  boolean check = checkForSend();
+  if (check) {
+    tempCurrentLevel = tempCurrentLevel /  10;
+    Serial.print("sending data");
+    Serial.print(tempCurrentLevel);
+    boolean checkServer =  sendDataServer();
+    tempCurrentLevel = 0;
+    statusCheck(checkServer);
+
+  }
+  else
+  {
+   
+    double distance, duration;
+    digitalWrite(trigPin, HIGH);
+    delayMicroseconds(1000);
+    digitalWrite(trigPin, LOW);
+    duration = pulseIn(echoPin, HIGH); // calculating the distance with respect to duration of sound released by trigger
+    distance = (duration / 2) / 29.1;
+
+
+    
+    if (distance > totalLevel && distance > 0)
+    {
+
+      Serial.println("open");
+      sensorStatus = 1 ;
+    }
+    else if (distance <= 4)
+    {
+      Serial.println("dirty");
+      sendCleanMe();
+
+    }
+    else if ( distance <= totalLevel && distance > 0)
+    {
+
+      Serial.println("closed");
+      sensorStatus = 0 ;
+      Serial.println("Distance is  " + (String(distance)));
+      currentLevel = (((distance - errorLevel) / (totalLevel)) * 100) ;
+      currentLevel = 100 - currentLevel;
+      tempCurrentLevel =  currentLevel + tempCurrentLevel;
+      Serial.print("current level is" + String(tempCurrentLevel));
+    }
+
+
+  }
+
+
+
 }
 
+
+void led()
+{
+  double level = tempCurrentLevel /  counter;
+  if ( level <= 60 && level >= 0)
+  {
+    digitalWrite(ledGreen, HIGH) ;
+    digitalWrite(ledRed, LOW);
+  }
+  else if (level > 60 || level < 0)
+  {
+    digitalWrite(ledRed, HIGH);
+    digitalWrite(ledGreen, LOW);
+  }
+}
+
+
+void statusCheck(boolean checkServer)
+{
+  if (checkServer)
+  {
+    Serial.println("Request Successfully Sent To Server");
+  }
+  else
+  {
+    Serial.println("Failed To Connect To The Server");
+  }
+}
+
+boolean checkForSend()
+{
+  if (counter == dataRetries)
+  {
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
 
 
 void setup()
@@ -47,15 +139,10 @@ void setup()
   Serial.begin(115200);
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
-  pinMode(ledRed,OUTPUT);
-  pinMode(ledGreen,OUTPUT);
+  pinMode(ledRed, OUTPUT);
+  pinMode(ledGreen, OUTPUT);
+  //  pinMode(lidCheckPin , OUTPUT);
   wifiConnect();
-
-
-
-
-
-
 }
 
 void wifiConnect()
@@ -84,32 +171,53 @@ void wifiConnect()
 
 
 
-void getExternalIp()
+boolean sendDataServer()
 {
-  WiFiClient client;
-  if (!client.connect("api.ipify.org", 80)) {
-    Serial.println("Failed to connect with 'api.ipify.org' !");
+
+  HTTPClient http;
+  String data = "?status=" + String(sensorStatus) + "&currentLevel=" + String(currentLevel);
+  http.begin(Link + data);
+  int httpCode = http.GET();
+  String payload = http.getString();
+  if (httpCode > 0 )
+  {
+    Serial.println(payload);
+    http.end();
+    counter = 0 ;
+    return true;
   }
   else
   {
-    int timeout = millis() + 5000;
-    client.print("GET /?format=json HTTP/1.1\r\nHost: api.ipify.org\r\n\r\n");
-    while (client.available() == 0) {
-      if (timeout - millis() < 0) {
-        Serial.println(">>> Client Timeout !");
-        client.stop();
-        return;
-      }
-    }
-    int size;
-    while ((size = client.available()) > 0) {
-      uint8_t* msg = (uint8_t*)malloc(size);
-      size = client.read(msg, size);
-      Serial.write(msg, size);
-      free(msg);
-    }
+    Serial.println("Failed To establish connection to the server");
+    http.end();
+    counter = 0 ;
+    return false;
   }
 
+}
+
+
+void sendCleanMe()
+{
+  HTTPClient http;
+  String data = "?status=" + String(sensorStatus) + "&currentLevel=" + String(currentLevel);
+  http.begin(Link + data);
+  http.begin(Link);
+  int httpCode = http.GET();
+  String payload = http.getString();
+  if (httpCode > 0 )
+  {
+    Serial.println(payload);
+    http.end();
+    counter = 0 ;
+    Serial.print("sent dirty signal");
+  }
+  else
+  {
+    Serial.println("Failed To establish connection to the server");
+    counter = 0 ;
+    http.end();
+  }
 }
 
 
@@ -118,16 +226,12 @@ void getExternalIp()
 
 void loop()
 {
+
+
+
   calculateGarbage();
-  if(current_level <= 60 && current_level > 0)
-  {
-    digitalWrite(ledGreen,HIGH) ;
-    digitalWrite(ledRed,LOW);
-  }
-  else if(current_level > 60 || current_level < 0)
-  {
-    digitalWrite(ledRed,HIGH);
-    digitalWrite(ledGreen,LOW);
-  }
-  delay(500);
+  led();
+
+
+
 }

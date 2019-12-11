@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+</head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<body>
+    <div class="container">
+        <h2 class="text-center">Details</h2>
+        <table class="table">
+            <thead class="thead-dark">
+
+            </thead>
+            <tbody>
+             <tr>
+                    <th scope="col">CanId</th>
+                    <th scope="col">IP Address</th>
+                    <th scope="col">Percentage</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Date</th>
+                </tr>
+            {% for a in obj %}
+                  <tr>
+                    <th scope="row">{{ a.canid }}</th>
+                    <td>{{ a.ip }}</td>
+                    <td>{{ a.level }}</td>
+                    <td>
+                     {% if a.status == '2' %}
+                            Dirty Sensor
+                            {% elif a.status == '0' %}
+                            Closed
+                        {% endif %}
+                    </td>
+                    <td>{{ a.date }}</td>
+                </tr>
+            {% endfor %}
+
+
+
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>

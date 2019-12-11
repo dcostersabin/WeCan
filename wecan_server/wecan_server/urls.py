@@ -20,4 +20,8 @@ from requestHandler import views as v
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',v.index, name='index'),
+    path('view/',v.view, name="view"),
+    path('detail/', v.detail, name="detail")
+
 ]
+
