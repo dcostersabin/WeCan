@@ -9,7 +9,7 @@
 
 #define STASSID "linux"
 #define STAPSK "frankensteindcoster"
-#define Link "http://54db6e5b.ngrok.io"
+#define Link "http://76111a42.ngrok.io"
 #define ServerDelay 5000
 #define id "wecan1"
 

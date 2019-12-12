@@ -25,7 +25,8 @@ def index(request):
 
 def view(request):
     latest = Can.objects.last();
-    context = dict(ip=latest.ip, status=latest.status, level=latest.level, date=latest.date,canid=latest.canid)
+    context = dict(ip=latest.ip, status=latest.status, level=float(latest.level), date=latest.date,canid=latest.canid)
+    # return HttpResponse(datetime.now())
     return HttpResponse(render(request, "aaa.html", context))
 
 
@@ -35,3 +36,20 @@ def detail(request):
         "obj": latest
     }
     return HttpResponse(render(request, "details.html", latest))
+
+
+def location(request):
+    import requests
+
+    url = "https://apility-io-ip-geolocation-v1.p.rapidapi.com/" + request.GET['ip']
+
+    headers = {
+        'x-rapidapi-host': "apility-io-ip-geolocation-v1.p.rapidapi.com",
+        'x-rapidapi-key': "4e4506b3eemsh8c2b49b2f18e958p1df746jsn791bfba24c44",
+        'accept': "application/json"
+    }
+
+    response = requests.request("GET", url, headers=headers)
+
+
+    return HttpResponse(response)

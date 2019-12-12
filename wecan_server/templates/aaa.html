@@ -19,13 +19,10 @@
       body{
         padding-top:20px;
       }
+
     </style>
 </head>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 <body>
     <div class="container">
         <div class="row">
@@ -38,18 +35,29 @@
                         <p class="text-center ">{{ ip }}</p>
                     </div>
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item" style="text-red">Status:
+
                             {% if status == '2' %}
+                                 <li class="list-group-item" style="color: red" >Status:
                             Dirty Sensor
                             {% elif status == '0' %}
+                                <li class="list-group-item"  style="color:green;" >Status:
                             Closed
                         {% endif %}
 
                         </li>
-                        <li class="list-group-item" style="text-blue">Percentage:{{ level }}</li>
+                        <li class="list-group-item " >Percentage:
+                            {% if level <= 0.3 %}
+                            <span style="color: green">{{ level }}</span>
+                            {% elif level >= 0.3 and level <= 0.9  %}
+                            <span style="color: orange">{{ level }}</span>
+                            {% else %}
+                            <span style="color: red">{{ level }}</span>
+                        {% endif %}
+                        </li>
                     <li class="list-group-item">Last Refreshed : {{ date }}</li>
                     </ul>
                     <div class="card-body">
+                        <button class="map btn-success" onclick="window.location.href='/location/?ip={{ ip }}'">View Map</button>
                         <button class="Details btn-primary float-right" onclick="window.location.href='/detail'">View Details</button>
                     </div>
 
@@ -63,14 +71,22 @@
                         <p class="text-center">192.68.1.1</p>
                     </div>
                      <ul class="list-group list-group-flush">
-                        <li class="list-group-item" style="text-red">Status:  {% if status == '2' %}
+                        <li class="list-group-item" style="color:green;"  >Status:  {% if status == '2' %}
                             Dirty Sensor
                             {% elif status == '0' %}
                             Closed
                         {% endif %}
 
                         </li>
-                        <li class="list-group-item" style="text-blue">Percentage:{{ level }}</li>
+                        <li class="list-group-item"   >Percentage:
+                        {% if level <= 0.3 %}
+                            <span style="color: green">{{ level }}</span>
+                            {% elif level >= 0.3 and level <= 0.9  %}
+                            <span style="color: orange">{{ level }}</span>
+                            {% else %}
+                            <span style="color: red">{{ level }}</span>
+                        {% endif %}
+                        </li>
                     <li class="list-group-item">Last Refreshed : {{ date }}</li>
                     </ul>
                     <div class="card-body">
@@ -87,14 +103,22 @@
                         <p class="text-center">192.68.1.1</p>
                     </div>
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item" style="text-red">Status:  {% if status == '2' %}
+                        <li class="list-group-item"  style="color:green;" >Status:  {% if status == '2' %}
                             Dirty Sensor
                             {% elif status == '0' %}
                             Closed
                         {% endif %}
 
                         </li>
-                        <li class="list-group-item" style="text-blue">Percentage:{{ level }}</li>
+                        <li class="list-group-item" style="text-blue">Percentage:
+                        {% if level <= 0.3 %}
+                            <span style="color: green">{{ level }}</span>
+                            {% elif level >= 0.3 and level <= 0.9  %}
+                            <span style="color: orange">{{ level }}</span>
+                            {% else %}
+                            <span style="color: red">{{ level }}</span>
+                        {% endif %}
+                        </li>
                     <li class="list-group-item">Last Refreshed : {{ date }}</li>
                     </ul>
                     <div class="card-body">

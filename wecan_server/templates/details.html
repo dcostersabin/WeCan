@@ -29,13 +29,13 @@
                     <th scope="row">{{ a.canid }}</th>
                     <td>{{ a.ip }}</td>
                     <td>{{ a.level }}</td>
-                    <td>
+
                      {% if a.status == '2' %}
-                            Dirty Sensor
+                         <td style="color: red"> Dirty Sensor</td>
                             {% elif a.status == '0' %}
-                            Closed
+                            <td style="color: green">Closed</td>
                         {% endif %}
-                    </td>
+
                     <td>{{ a.date }}</td>
                 </tr>
             {% endfor %}
