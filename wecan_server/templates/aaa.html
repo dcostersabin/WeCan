@@ -1,84 +1,83 @@
-<!DOCTYPE html>
-<html>
 
-<head>
-      {% load static %}
-    <title></title>
-    <style type="text/css">
-      .card{
-        /*border:2px solid black !important;*/
-        border-radius: 30px !important;
-        box-shadow: 10px 10px 5px 1px;
-      }
-      .card>img{
-        height: 300px;
-        width: 300px;
-        justify-content: center;
-        margin-left: 20px;
-      }
-      body{
-        padding-top:20px;
-      }
 
-    </style>
-</head>
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v3.8.6">
+    <title>Pricing example · Bootstrap</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.4/examples/pricing/">
+
+    <!-- Bootstrap core CSS -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-<body>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card">
+    <!-- Favicons -->
+<link rel="apple-touch-icon" href="/docs/4.4/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
+<link rel="icon" href="/docs/4.4/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/docs/4.4/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
+<link rel="manifest" href="/docs/4.4/assets/img/favicons/manifest.json">
+<link rel="mask-icon" href="/docs/4.4/assets/img/favicons/safari-pinned-tab.svg" color="#563d7c">
+<link rel="icon" href="/docs/4.4/assets/img/favicons/favicon.ico">
+<meta name="msapplication-config" content="/docs/4.4/assets/img/favicons/browserconfig.xml">
+<meta name="theme-color" content="#563d7c">
 
-{#                    <img class="card-img-top" src="{% static 'dustbinavg.png' %}" alt="Card image cap">#}
-                    <div class="card-body">
-                        <h5 class="card-title text-center font-weight-bold">{{ canid }}</h5>
-                        <p class="text-center ">{{ ip }}</p>
-                    </div>
-                    <ul class="list-group list-group-flush">
 
-                            {% if status == '2' %}
-                                 <li class="list-group-item" style="color: red" >Status:
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+    <!-- Custom styles for this template -->
+    <link href="pricing.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+  <h5 class="my-0 mr-md-auto font-weight-normal" style="cursor: help" onclick="window.location.href='/view'">WeCan</h5>
+
+</div>
+
+<div class="pricing-header px-3 py-3 pt-md-3 pb-md-4 mx-auto text-center">
+  <h1 class="display-4">Active Bins </h1>
+</div>
+
+<div class="container">
+  <div class="card-deck mb-3 text-center">
+    <div class="card mb-4 shadow-sm">
+      <div class="card-header">
+        <h4 class="my-0 font-weight-normal">WeCan1</h4>
+      </div>
+      <div class="card-body">
+        <h1 class="card-title pricing-card-title">{{ ip }} <small class="text-muted"></small></h1>
+        <ul class="list-unstyled mt-3 mb-4">
+          <li>
+              {% if status == 2 %}
+                                 <li  style="color: red" >Status:
                             Dirty Sensor
-                            {% elif status == '0' %}
-                                <li class="list-group-item"  style="color:green;" >Status:
+                            {% elif status == 0 %}
+                                <li   style="color:green;" >Status:
                             Closed
+                                 {% elif status == 1 %}
+                                <li  style="color:orange;" >Status:
+                            Open
                         {% endif %}
-
-                        </li>
-                        <li class="list-group-item " >Percentage:
-                            {% if level <= 0.3 %}
-                            <span style="color: green">{{ level }}</span>
-                            {% elif level >= 0.3 and level <= 0.9  %}
-                            <span style="color: orange">{{ level }}</span>
-                            {% else %}
-                            <span style="color: red">{{ level }}</span>
-                        {% endif %}
-                        </li>
-                    <li class="list-group-item">Last Refreshed : {{ date }}</li>
-                    </ul>
-                    <div class="card-body">
-                        <button class="map btn-success" onclick="window.location.href='/location/?ip={{ ip }}'">View Map</button>
-                        <button class="Details btn-primary float-right" onclick="window.location.href='/detail'">View Details</button>
-                    </div>
-
-                </div>
-            </div>
-        <div class="col-md-4">
-                <div class="card">
-{#                    <img class="card-img-top" src="dustbinavg.png" alt="Card image cap">#}
-                    <div class="card-body">
-                        <h5 class="card-title text-center">Dummy can 1</h5>
-                        <p class="text-center">192.68.1.1</p>
-                    </div>
-                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item" style="color:green;"  >Status:  {% if status == '2' %}
-                            Dirty Sensor
-                            {% elif status == '0' %}
-                            Closed
-                        {% endif %}
-
-                        </li>
-                        <li class="list-group-item"   >Percentage:
+          </li>
+          <li>Percentage:
                         {% if level <= 0.3 %}
                             <span style="color: green">{{ level }}</span>
                             {% elif level >= 0.3 and level <= 0.9  %}
@@ -87,48 +86,116 @@
                             <span style="color: red">{{ level }}</span>
                         {% endif %}
                         </li>
-                    <li class="list-group-item">Last Refreshed : {{ date }}</li>
-                    </ul>
-                    <div class="card-body">
-{#                        <button class="map btn-success">View Map</button>#}
-                        <button class="Details btn-primary float-right">View Details</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-{#                    <img class="card-img-top" src="full.png" alt="Card image cap">#}
-                    <div class="card-body">
-                        <h5 class="card-title text-center">Dummy can 2</h5>
-                        <p class="text-center">192.68.1.1</p>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item"  style="color:green;" >Status:  {% if status == '2' %}
-                            Dirty Sensor
-                            {% elif status == '0' %}
-                            Closed
-                        {% endif %}
+        <li >Long : {{ lon }}</li>
+                        <li>Lati : {{ lat  }}</li>
 
-                        </li>
-                        <li class="list-group-item" style="text-blue">Percentage:
-                        {% if level <= 0.3 %}
-                            <span style="color: green">{{ level }}</span>
-                            {% elif level >= 0.3 and level <= 0.9  %}
-                            <span style="color: orange">{{ level }}</span>
-                            {% else %}
-                            <span style="color: red">{{ level }}</span>
-                        {% endif %}
-                        </li>
-                    <li class="list-group-item">Last Refreshed : {{ date }}</li>
-                    </ul>
-                    <div class="card-body">
-{#                        <button class="map btn-success">View Map</button>#}
-                        <button class="Details btn-primary float-right">View Details</button>
+        </ul>
+             {% if stat == 0 %}
+                            <button type="button" class="btn btn-sm  btn-outline-primary" onclick="window.location.href='/openLid/?ip={{ ip }}'">Open</button>
+
+                     {% elif stat == 1 %}
+                 <button type="button" class="btn btn-sm  btn-outline-danger"onclick="window.location.href='/closeLid/?ip={{ ip }}'">Close</button>
+
+                     {% endif %}
+
+                            <button type="button" class="btn btn-sm  btn-outline-primary" onclick="window.location.href='/location/?lon={{ lon }}&lat={{ lat }}'">View Map</button>
+                        <button class="btn btn-sm  btn-outline-primary" onclick="window.location.href='/detail'">View Details</button>
+
                     </div>
-                </div>
-            </div>
-        </div>
     </div>
-</body>
 
+      <div class="card mb-4 shadow-sm">
+      <div class="card-header">
+        <h4 class="my-0 font-weight-normal">DemoCan2</h4>
+      </div>
+      <div class="card-body">
+        <h1 class="card-title pricing-card-title">192.168.1.1<small class="text-muted"></small></h1>
+        <ul class="list-unstyled mt-3 mb-4">
+          <li>
+              {% if status == 2 %}
+                                 <li  style="color: red" >Status:
+                            Dirty Sensor
+                            {% elif status == 0 %}
+                                <li   style="color:green;" >Status:
+                            Closed
+                                 {% elif status == 1 %}
+                                <li  style="color:orange;" >Status:
+                            Open
+                        {% endif %}
+          </li>
+          <li>Percentage:
+                        {% if level <= 0.3 %}
+                            <span style="color: green">{{ level }}</span>
+                            {% elif level >= 0.3 and level <= 0.9  %}
+                            <span style="color: orange">{{ level }}</span>
+                            {% else %}
+                            <span style="color: red">{{ level }}</span>
+                        {% endif %}
+                        </li>
+        <li >Long : 85.331449</li>
+                        <li>Lati :27.689164</li>
+
+        </ul>
+
+                            <button type="button" class="btn btn-sm  btn-outline-primary" onclick="window.location.href='/openLid/?ip={{ ip }}'">Open</button>
+
+
+
+                            <button type="button" class="btn btn-sm  btn-outline-primary" onclick="window.location.href='/location/?lon=85.331449&lat=27.689164'">View Map</button>
+                        <button class="btn btn-sm  btn-outline-primary" onclick="window.location.href='/detail'">View Details</button>
+
+                    </div>
+    </div>
+
+
+      <div class="card mb-4 shadow-sm">
+      <div class="card-header">
+        <h4 class="my-0 font-weight-normal">DemoCan2</h4>
+      </div>
+      <div class="card-body">
+        <h1 class="card-title pricing-card-title">{{ ip }} <small class="text-muted"></small></h1>
+        <ul class="list-unstyled mt-3 mb-4">
+          <li>
+              {% if status == 2 %}
+                                 <li  style="color: red" >Status:
+                            Dirty Sensor
+                            {% elif status == 0 %}
+                                <li   style="color:green;" >Status:
+                            Closed
+                                 {% elif status == 1 %}
+                                <li  style="color:orange;" >Status:
+                            Open
+                        {% endif %}
+          </li>
+          <li>Percentage:
+                        {% if level <= 0.3 %}
+                            <span style="color: green">{{ level }}</span>
+                            {% elif level >= 0.3 and level <= 0.9  %}
+                            <span style="color: orange">{{ level }}</span>
+                            {% else %}
+                            <span style="color: red">{{ level }}</span>
+                        {% endif %}
+                        </li>
+        <li >Long : {{ lon }}</li>
+                        <li>Lati : {{ lat  }}</li>
+
+        </ul>
+
+                            <button type="button" class="btn btn-sm  btn-outline-primary" onclick="window.location.href='/openLid/?ip={{ ip }}'">Open</button>
+
+
+
+                            <button type="button" class="btn btn-sm  btn-outline-primary" onclick="window.location.href='/location/?lon=85.331449&lat=27.689164'">View Map</button>
+                        <button class="btn btn-sm  btn-outline-primary" onclick="window.location.href='/detail'">View Details</button>
+
+                    </div>
+    </div>
+
+    </div>
+
+  </div>
+
+
+</div>
+</body>
 </html>

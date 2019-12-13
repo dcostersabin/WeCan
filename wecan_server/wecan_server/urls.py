@@ -23,6 +23,9 @@ urlpatterns = [
     path('view/',v.view, name="view"),
     path('detail/', v.detail, name="detail"),
     path('location/',v.location, name="location"),
+    path('openLid/',v.openLid,name="open"),
+    path('closeLid/', v.closeLid, name="close"),
+    path('locationDetail/',v.locationDetail,name = "locationdetail")
 
 ]
 
