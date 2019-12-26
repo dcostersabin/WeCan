@@ -83,7 +83,7 @@ def location(request):
     lon = request.GET['lat']
     lat = request.GET['lon']
     point = lon + ',' + lat
-    geo = GoogleV3(api_key='AIzaSyBncA1-AoVovjUmp1mDBstZs6PKbBxKnKA')
+    geo = GoogleV3(api_key='')
     address = (geo.reverse(point))
     # return(HttpResponse(address[0]))
     url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=Prime College, Pahikwo Sadak, Kathmandu&destinations="+str(address[0])+"&key=AIzaSyBncA1-AoVovjUmp1mDBstZs6PKbBxKnKA"
