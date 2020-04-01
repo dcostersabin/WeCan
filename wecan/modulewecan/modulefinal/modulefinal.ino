@@ -17,12 +17,12 @@
 #include <WifiLocation.h>
 // define credentials
 
-#define STASSID "linux"
-#define STAPSK "frankensteindcoster"
-#define Link "http://309baa88.ngrok.io"
+#define STASSID ""
+#define STAPSK ""
+#define Link ""
 #define ServerDelay 5000
 #define id "wecan1"
-const char* googleApiKey = "AIzaSyBncA1-AoVovjUmp1mDBstZs6PKbBxKnKA";
+const char* googleApiKey = "";
 
 
 
